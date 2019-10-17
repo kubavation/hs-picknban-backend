@@ -6,7 +6,7 @@ public enum Class {
     WARRIOR("Warrior"),
     ROGUE("Rogue"),
     MAGE("Mage"),
-    PALLADIN("Palladin"),
+    PALADIN("Paladin"),
     PRIEST("Priest"),
     SHAMAN("Shaman"),
     WARLOCK("Warlock");
