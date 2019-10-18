@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static io.hsproject.Picknban.converter.RoomConverter.toEntity;
+import static io.hsproject.Picknban.converter.RoomConverter.*;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -25,12 +25,12 @@ public class RoomController {
     private final RoomService roomService;
 
     @PostMapping("/rooms")
-    public ResponseEntity<Room> create(@RequestBody RoomDTO roomDTO){
-        return new ResponseEntity<>( roomService.createRoom(toEntity(roomDTO)), CREATED );
+    public ResponseEntity<RoomDTO> create(@RequestBody RoomDTO roomDTO){
+        return new ResponseEntity<>( toDTO( roomService.createRoom(toEntity(roomDTO)) ), CREATED );
     }
 
     @GetMapping("/rooms")
-    public ResponseEntity<List<Room>> findAll() {
+    public ResponseEntity<?> findAll() {
         return new ResponseEntity<>( toDTOCollection(roomService.findAll()), OK );
     }
 }
