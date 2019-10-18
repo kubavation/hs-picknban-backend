@@ -1,5 +1,6 @@
 package io.hsproject.Picknban.controller;
 
+import io.hsproject.Picknban.converter.RoomConverter;
 import io.hsproject.Picknban.dto.RoomDTO;
 import io.hsproject.Picknban.model.Room;
 import io.hsproject.Picknban.service.RoomService;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import static io.hsproject.Picknban.converter.RoomConverter.toEntity;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
@@ -21,6 +23,6 @@ public class RoomController {
 
     @PostMapping("/rooms")
     public ResponseEntity<Room> create(@RequestBody RoomDTO roomDTO){
-        return new ResponseEntity<>(roomService.createRoom(room), CREATED);
+        return new ResponseEntity<>( roomService.createRoom(toEntity(roomDTO)), CREATED );
     }
 }
