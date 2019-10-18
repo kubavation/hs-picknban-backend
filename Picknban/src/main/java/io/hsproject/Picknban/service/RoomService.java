@@ -1,4 +1,4 @@
-package io.hsproject.Picknban;
+package io.hsproject.Picknban.service;
 
 import io.hsproject.Picknban.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
