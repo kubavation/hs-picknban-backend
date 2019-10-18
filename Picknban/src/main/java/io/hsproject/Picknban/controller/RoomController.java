@@ -19,11 +19,6 @@ public class RoomController {
 
     private final RoomService roomService;
 
-    @PostMapping("/rooms")
-    public ResponseEntity<RoomDTO> create(@RequestBody RoomDTO roomDTO){
-        return new ResponseEntity<>( toDTO( roomService.createRoom(toEntity(roomDTO)) ), CREATED );
-    }
-
     @GetMapping("/rooms")
     public ResponseEntity<?> findAll() {
         return new ResponseEntity<>( toDTOCollection(roomService.findAll()), OK );
@@ -32,5 +27,15 @@ public class RoomController {
     @GetMapping("/rooms/{id}")
     public ResponseEntity<RoomDTO> findById(@PathVariable String id) {
         return new ResponseEntity<>( toDTO(roomService.findById(id)), OK );
+    }
+
+    @PostMapping("/rooms")
+    public ResponseEntity<RoomDTO> create(@RequestBody RoomDTO roomDTO){
+        return new ResponseEntity<>( toDTO( roomService.createRoom(toEntity(roomDTO)) ), CREATED );
+    }
+
+    @PutMapping("/rooms/{id}")
+    public ResponseEntity<RoomDTO> update(@RequestBody RoomDTO roomDTO) {
+        return new ResponseEntity<>( toDTO( roomService.updateRoom(toEntity(roomDTO))), OK );
     }
 }

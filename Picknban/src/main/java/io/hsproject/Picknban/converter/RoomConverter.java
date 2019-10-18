@@ -15,6 +15,7 @@ public class RoomConverter {
 
     public static RoomDTO toDTO(@NonNull Room room) {
         return RoomDTO.builder()
+                .id(room.getId()) //todo remove?
                 .banType(room.getBanType())
                 .createdAt(room.getCreatedAt())
                 .expiresOn(room.getExpiresOn())
@@ -30,6 +31,7 @@ public class RoomConverter {
 
     public static Room toEntity(@NonNull RoomDTO roomDTO) {
         return Room.builder()
+                .id(roomDTO.getId())  //todo remove?
                 .banType(roomDTO.getBanType())
                 .createdAt(roomDTO.getCreatedAt())
                 .expiresOn(roomDTO.getExpiresOn())

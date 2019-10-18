@@ -28,4 +28,8 @@ public class RoomService {
         return roomRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException(id, Room.class));
     }
+
+    public Room updateRoom(Room room) {
+        return roomRepository.save(room);
+    }
 }
