@@ -7,7 +7,13 @@ import io.hsproject.Picknban.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 import static io.hsproject.Picknban.converter.RoomConverter.*;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -18,6 +24,8 @@ import static org.springframework.http.HttpStatus.OK;
 public class RoomController {
 
     private final RoomService roomService;
+    private final SimpMessageSendingOperations messagingTemplate;
+
 
     @GetMapping("/rooms")
     public ResponseEntity<?> findAll() {
@@ -38,4 +46,11 @@ public class RoomController {
     public ResponseEntity<RoomDTO> update(@RequestBody RoomDTO roomDTO) {
         return new ResponseEntity<>( toDTO( roomService.updateRoom(toEntity(roomDTO))), OK );
     }
+
+    @MessageMapping("/rooms/{roomId}")
+    public void send(@DestinationVariable Long roomId, @Payload RoomDTO roomDTO) {
+        this.messagingTemplate.convertAndSend("/rooms/" + roomId,
+                toDTO( roomService.updateRoom(toEntity(roomDTO))) );
+    }
+
 }
