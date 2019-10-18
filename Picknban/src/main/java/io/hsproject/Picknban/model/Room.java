@@ -3,6 +3,7 @@ package io.hsproject.Picknban.model;
 
 import io.hsproject.Picknban.enums.BanType;
 import io.hsproject.Picknban.enums.Class;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.List;
 @Document(collection = "ROOM")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Room {
 

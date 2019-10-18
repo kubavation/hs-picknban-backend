@@ -2,6 +2,7 @@ package io.hsproject.Picknban.dto;
 
 import io.hsproject.Picknban.enums.BanType;
 import io.hsproject.Picknban.enums.Class;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,9 +11,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
 @Builder
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RoomDTO {
 
     private String id;
