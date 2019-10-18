@@ -1,6 +1,7 @@
 package io.hsproject.Picknban.service;
 
 import io.hsproject.Picknban.dto.RoomDTO;
+import io.hsproject.Picknban.exception.ResourceNotFoundException;
 import io.hsproject.Picknban.model.Room;
 import io.hsproject.Picknban.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,6 @@ public class RoomService {
 
     public Room findById(String id) {
         return roomRepository.findById(id)
-                    .orElseThrow(RuntimeException::new);
+                    .orElseThrow(() -> new ResourceNotFoundException(id, Room.class));
     }
 }
