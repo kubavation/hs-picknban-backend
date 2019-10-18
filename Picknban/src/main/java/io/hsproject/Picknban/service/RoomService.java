@@ -23,4 +23,8 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
+    public Room findById(String id) {
+        return roomRepository.findById(id)
+                    .orElseThrow(RuntimeException::new);
+    }
 }
