@@ -5,6 +5,7 @@ import io.hsproject.Picknban.dto.RoomDTO;
 import io.hsproject.Picknban.model.Room;
 import io.hsproject.Picknban.service.RoomService;
 import lombok.RequiredArgsConstructor;
+import lombok.Synchronized;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -48,6 +49,7 @@ public class RoomController {
     }
 
     @MessageMapping("/rooms/{roomId}")
+    @Synchronized //todo ?
     public void send(@DestinationVariable Long roomId, @Payload RoomDTO roomDTO) {
         this.messagingTemplate.convertAndSend("/rooms/" + roomId,
                 toDTO( roomService.updateRoom(toEntity(roomDTO))) );
