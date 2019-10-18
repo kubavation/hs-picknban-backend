@@ -6,6 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 //todo bean??
 public class RoomConverter {
 
@@ -24,7 +28,6 @@ public class RoomConverter {
                 .guestTypes(room.getGuestTypes()).build();
     }
 
-
     public static Room toEntity(@NonNull RoomDTO roomDTO) {
         return Room.builder()
                 .banType(roomDTO.getBanType())
@@ -40,5 +43,11 @@ public class RoomConverter {
                 .guestTypes(roomDTO.getGuestTypes()).build();
     }
 
+    public static Collection<RoomDTO> toDTOCollection(@NonNull Collection<Room> rooms) {
+        return rooms.stream().map(RoomConverter::toDTO).collect(Collectors.toList());
+    }
 
+    public static Collection<Room> toEntityCollection(@NonNull Collection<RoomDTO> rooms) {
+        return rooms.stream().map(RoomConverter::toEntity).collect(Collectors.toList());
+    }
 }
