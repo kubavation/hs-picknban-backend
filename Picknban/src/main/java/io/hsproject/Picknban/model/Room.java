@@ -3,6 +3,7 @@ package io.hsproject.Picknban.model;
 
 import io.hsproject.Picknban.enums.BanType;
 import io.hsproject.Picknban.enums.Class;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -15,6 +16,7 @@ import java.util.List;
 @Document(collection = "ROOM")
 @Data
 @NoArgsConstructor
+@Builder
 public class Room {
 
     @Id
