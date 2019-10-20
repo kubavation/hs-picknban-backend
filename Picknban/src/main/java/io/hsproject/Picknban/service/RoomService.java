@@ -45,5 +45,10 @@ public class RoomService {
         return room;
     }
 
-    private Room on
+    /*init of token on guest connect*/
+    private Room onGuestConnect(Room old) {
+        Room room = Room.of(old);
+        room.setGuestId(UUID.randomUUID().toString());
+        return room;
+    }
 }
