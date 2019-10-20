@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import static java.time.LocalDateTime.now;
+
 @Service
 @RequiredArgsConstructor
 public class RoomService {
@@ -18,8 +20,7 @@ public class RoomService {
     private final RoomRepository roomRepository;
 
     public Room createRoom(Room room) {
-        //creating token for user
-        return roomRepository.save(room);
+        return roomRepository.save(onCreate(room));
     }
 
     public List<Room> findAll() {
@@ -35,8 +36,12 @@ public class RoomService {
         return roomRepository.save(room);
     }
 
-//
-//    private Room init(Room room) {
-//
-//    }
+    /*init of tokens on create*/
+    private Room onCreate(Room old) {
+        Room room = Room.of(old);
+        room.setCreatorId(UUID.randomUUID().toString());
+        room.setCreatedAt(now());
+        room.setExpiresOn(now().plusMinutes(10));
+        return room;
+    }
 }
