@@ -46,6 +46,7 @@ public class Room {
 
     public static Room of(final Room room) {
         return Room.builder()
+                .creatorTypes(room.creatorTypes)
                 .banType(room.banType)
                 .creator(room.creator).build();
     }
