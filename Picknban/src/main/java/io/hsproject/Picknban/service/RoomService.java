@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +18,7 @@ public class RoomService {
     private final RoomRepository roomRepository;
 
     public Room createRoom(Room room) {
+        //creating token for user
         return roomRepository.save(room);
     }
 
@@ -32,4 +34,9 @@ public class RoomService {
     public Room updateRoom(Room room) {
         return roomRepository.save(room);
     }
+
+//
+//    private Room init(Room room) {
+//
+//    }
 }

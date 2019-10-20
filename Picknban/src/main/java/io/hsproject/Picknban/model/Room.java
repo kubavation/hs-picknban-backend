@@ -43,4 +43,11 @@ public class Room {
     private List<Class> creatorBans = new ArrayList<>();
     private List<Class> guestBans = new ArrayList<>();
 
+
+    public static Room of(final Room room) {
+        return Room.builder()
+                .banType(room.banType)
+                .creator(room.creator).build();
+    }
+
 }
