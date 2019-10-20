@@ -48,6 +48,7 @@ public class RoomController {
         return new ResponseEntity<>( toDTO( roomService.updateRoom(toEntity(roomDTO))), OK );
     }
 
+    //app/topic/rooms/{roomId}
     @MessageMapping("/rooms/{roomId}")
     @Synchronized //todo ?
     public void send(@DestinationVariable Long roomId, @Payload RoomDTO roomDTO) {
