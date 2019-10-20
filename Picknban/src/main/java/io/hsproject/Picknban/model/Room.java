@@ -46,9 +46,20 @@ public class Room {
 
     public static Room of(final Room room) {
         return Room.builder()
+                .createdAt(room.createdAt)
                 .creatorTypes(room.creatorTypes)
+                .creatorBans(room.creatorBans)
                 .banType(room.banType)
-                .creator(room.creator).build();
+                .creator(room.creator)
+                .creatorId(room.creatorId)
+                .id(room.id)
+                .isActive(room.isActive)
+                .expiresOn(room.expiresOn)
+                .guestTypes(room.guestTypes)
+                .guestBans(room.guestBans)
+                .guest(room.guest)
+                .guestId(room.guestId)
+                .build();
     }
 
 }
