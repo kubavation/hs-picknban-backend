@@ -1,6 +1,7 @@
 package io.hsproject.Picknban.controller;
 
 import io.hsproject.Picknban.converter.RoomConverter;
+import io.hsproject.Picknban.dto.ConnectToRoomDTO;
 import io.hsproject.Picknban.dto.RoomDTO;
 import io.hsproject.Picknban.model.Room;
 import io.hsproject.Picknban.service.RoomService;
@@ -46,6 +47,11 @@ public class RoomController {
     @PutMapping("/rooms/{id}")
     public ResponseEntity<RoomDTO> update(@RequestBody RoomDTO roomDTO) {
         return new ResponseEntity<>( toDTO( roomService.updateRoom(toEntity(roomDTO))), OK );
+    }
+
+    @PostMapping("/rooms/join") //todo id???
+    public ResponseEntity<RoomDTO> join(@RequestBody ConnectToRoomDTO connect) {
+        return new ResponseEntity<>( toDTO(roomService.ifPossibleJoinRoom(connect.getRoomId(), connect.getUserToken())), OK);
     }
 
     //app/topic/rooms/{roomId}
