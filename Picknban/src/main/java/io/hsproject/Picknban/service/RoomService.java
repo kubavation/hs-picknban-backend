@@ -1,10 +1,12 @@
 package io.hsproject.Picknban.service;
 
 import io.hsproject.Picknban.dto.RoomDTO;
+import io.hsproject.Picknban.enums.UserType;
 import io.hsproject.Picknban.exception.ResourceNotFoundException;
 import io.hsproject.Picknban.exception.RoomIsFullException;
 import io.hsproject.Picknban.model.Room;
 import io.hsproject.Picknban.repository.RoomRepository;
+import io.hsproject.Picknban.util.TokenGeneratorUtils;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -62,10 +64,8 @@ public class RoomService {
     private Room tryToJoinRoomAndCreateGuest(String roomId) {
         if (isRoomHasEmptySpot(roomId)) {
             return roomRepository.findById(roomId)
-                    .map(r -> {
-                        r.setGuestId(UUID.randomUUID().toString());
-                        return roomRepository.save(r);
-                    }).orElseThrow(() -> new ResourceNotFoundException(roomId, Room.class));
+                    .map(r -> roomRepository.save(onGuestConnect(r)))
+                    .orElseThrow(() -> new ResourceNotFoundException(roomId, Room.class));
 
         } else {
             throw new RoomIsFullException(roomId);
@@ -75,7 +75,8 @@ public class RoomService {
     /*init of tokens on create*/
     private Room onCreate(Room old) {
         Room room = Room.of(old);
-        room.setCreatorId(UUID.randomUUID().toString());
+        room.setId(UUID.randomUUID().toString());
+        room.setCreatorId(TokenGeneratorUtils.generate(room.getId(), UserType.CREATOR));
         room.setCreatedAt(now());
         room.setExpiresOn(now().plusMinutes(10));
         return room;
@@ -84,7 +85,7 @@ public class RoomService {
     /*init of token on guest connect*/
     private Room onGuestConnect(Room old) {
         Room room = Room.of(old);
-        room.setGuestId(UUID.randomUUID().toString());
+        room.setGuestId(TokenGeneratorUtils.generate(room.getId(), UserType.GUEST));
         return room;
     }
 }
