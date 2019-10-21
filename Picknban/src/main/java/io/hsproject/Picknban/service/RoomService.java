@@ -36,6 +36,13 @@ public class RoomService {
         return roomRepository.save(room);
     }
 
+    public boolean isRoomHasEmptySpot(String id) {
+       return roomRepository.findById(id)
+                .map(r -> r.getGuestId() == null)
+                .orElseThrow(() -> new ResourceNotFoundException(id, Room.class));
+    }
+
+
 
     /*init of tokens on create*/
     private Room onCreate(Room old) {
