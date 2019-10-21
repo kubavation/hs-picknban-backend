@@ -50,8 +50,8 @@ public class RoomController {
     }
 
     @PostMapping("/rooms/join") //todo id???
-    public ResponseEntity<RoomDTO> join(@RequestBody ConnectToRoomDTO connect) {
-        return new ResponseEntity<>( toDTO(roomService.ifPossibleJoinRoom(connect.getRoomId(), connect.getUserToken())), OK);
+    public ResponseEntity<RoomDTO> join(@RequestBody ConnectToRoomDTO connectDTO) {
+        return new ResponseEntity<>( toDTO(roomService.ifPossibleJoinRoom(connectDTO)), OK);
     }
 
     //app/topic/rooms/{roomId}

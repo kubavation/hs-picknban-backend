@@ -1,6 +1,8 @@
 package io.hsproject.Picknban.service;
 
+import io.hsproject.Picknban.dto.ConnectToRoomDTO;
 import io.hsproject.Picknban.dto.RoomDTO;
+import io.hsproject.Picknban.enums.Class;
 import io.hsproject.Picknban.enums.UserType;
 import io.hsproject.Picknban.exception.ResourceNotFoundException;
 import io.hsproject.Picknban.exception.RoomIsFullException;
@@ -49,10 +51,10 @@ public class RoomService {
 
 
     //todo uuid generator with prrefixes
-    public Room ifPossibleJoinRoom(@NonNull String roomId, String guestId) {
-        return Optional.ofNullable(guestId)
-                .map((gId) -> tryToJoinRoomAsGuest(roomId, gId))
-                .orElseGet(() -> tryToJoinRoomAndCreateGuest(roomId));
+    public Room ifPossibleJoinRoom(@NonNull final ConnectToRoomDTO connectDTO) {
+        return Optional.ofNullable(connectDTO.getUserToken())
+                .map((gId) -> tryToJoinRoomAsGuest(connectDTO.getRoomId(), gId))
+                .orElseGet(() -> tryToJoinRoomAndCreateGuest(connectDTO));
     }
 
     private Room tryToJoinRoomAsGuest(String roomId, String guestId) {
@@ -61,14 +63,14 @@ public class RoomService {
                 .orElseThrow(RuntimeException::new);
     }
 
-    private Room tryToJoinRoomAndCreateGuest(String roomId) {
-        if (isRoomHasEmptySpot(roomId)) {
-            return roomRepository.findById(roomId)
-                    .map(r -> roomRepository.save(onGuestConnect(r)))
-                    .orElseThrow(() -> new ResourceNotFoundException(roomId, Room.class));
+    private Room tryToJoinRoomAndCreateGuest(final ConnectToRoomDTO connectDTO) {
+        if (isRoomHasEmptySpot(connectDTO.getRoomId())) {
+            return roomRepository.findById(connectDTO.getRoomId())
+                    .map(r -> roomRepository.save(onGuestConnect(r, connectDTO.getClasses())))
+                    .orElseThrow(() -> new ResourceNotFoundException(connectDTO.getRoomId(), Room.class));
 
         } else {
-            throw new RoomIsFullException(roomId);
+            throw new RoomIsFullException(connectDTO.getRoomId());
         }
     }
 
@@ -83,9 +85,10 @@ public class RoomService {
     }
 
     /*init of token on guest connect*/
-    private Room onGuestConnect(Room old) {
+    private Room onGuestConnect(Room old, List<Class> types) {
         Room room = Room.of(old);
         room.setGuestId(TokenGeneratorUtils.generate(room.getId(), UserType.GUEST));
+        room.setGuestTypes(types);
         return room;
     }
 }
