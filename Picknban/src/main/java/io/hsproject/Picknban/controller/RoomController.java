@@ -60,7 +60,7 @@ public class RoomController {
     @Synchronized //todo ?
     public void send(@DestinationVariable Long roomId, @Payload BanDTO banDTO) {
         this.messagingTemplate.convertAndSend("/rooms/" + roomId,
-                toDTO( roomService.updateRoom(toEntity(roomDTO))) );
+                toDTO( roomService.updateBans(banDTO)) );
     }
 
 }

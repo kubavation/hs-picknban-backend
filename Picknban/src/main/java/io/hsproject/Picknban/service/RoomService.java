@@ -51,12 +51,24 @@ public class RoomService {
     }
 
     public Room updateBans(final BanDTO banDTO) {
-        roomRepository.findById(banDTO.getRoomId())
-                .map(r -> r.set )
+        return roomRepository.findById(banDTO.getRoomId())
+                .map(r -> setBansBasedOnToken(r, banDTO))
+                .orElseThrow(RuntimeException::new);
     }
 
     private Room setBansBasedOnToken(final Room room, final BanDTO banDTO) {
+       switch (TokenGeneratorUtils.resolveFromToken(banDTO.getUserToken())) {
+           case CREATOR:
+               room.setCreatorBans(banDTO.getBans());
+               break;
+           case GUEST:
+               room.setGuestBans(banDTO.getBans());
+               break;
+           default:
+               break;
+       }
 
+       return roomRepository.save(room);
     }
 
     //todo uuid generator with prrefixes
