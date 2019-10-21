@@ -1,6 +1,7 @@
 package io.hsproject.Picknban.controller;
 
 import io.hsproject.Picknban.converter.RoomConverter;
+import io.hsproject.Picknban.dto.BanDTO;
 import io.hsproject.Picknban.dto.ConnectToRoomDTO;
 import io.hsproject.Picknban.dto.RoomDTO;
 import io.hsproject.Picknban.model.Room;
@@ -57,7 +58,7 @@ public class RoomController {
     //app/topic/rooms/{roomId}
     @MessageMapping("/rooms/{roomId}")
     @Synchronized //todo ?
-    public void send(@DestinationVariable Long roomId, @Payload RoomDTO roomDTO) {
+    public void send(@DestinationVariable Long roomId, @Payload BanDTO banDTO) {
         this.messagingTemplate.convertAndSend("/rooms/" + roomId,
                 toDTO( roomService.updateRoom(toEntity(roomDTO))) );
     }

@@ -1,5 +1,6 @@
 package io.hsproject.Picknban.service;
 
+import io.hsproject.Picknban.dto.BanDTO;
 import io.hsproject.Picknban.dto.ConnectToRoomDTO;
 import io.hsproject.Picknban.dto.RoomDTO;
 import io.hsproject.Picknban.enums.Class;
@@ -49,6 +50,14 @@ public class RoomService {
                 .orElseThrow(() -> new ResourceNotFoundException(id, Room.class));
     }
 
+    public Room updateBans(final BanDTO banDTO) {
+        roomRepository.findById(banDTO.getRoomId())
+                .map(r -> r.set )
+    }
+
+    private Room setBansBasedOnToken(final Room room, final BanDTO banDTO) {
+
+    }
 
     //todo uuid generator with prrefixes
     public Room ifPossibleJoinRoom(@NonNull final ConnectToRoomDTO connectDTO) {
