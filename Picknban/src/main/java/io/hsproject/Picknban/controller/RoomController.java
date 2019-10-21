@@ -55,9 +55,8 @@ public class RoomController {
         return new ResponseEntity<>( toDTO(roomService.ifPossibleJoinRoom(connectDTO)), OK);
     }
 
-    //app/topic/rooms/{roomId}
     @MessageMapping("/rooms/{roomId}")
-    @Synchronized //todo ?
+    @Synchronized 
     public void send(@DestinationVariable Long roomId, @Payload BanDTO banDTO) {
         this.messagingTemplate.convertAndSend("/rooms/" + roomId,
                 toDTO( roomService.updateBans(banDTO)) );

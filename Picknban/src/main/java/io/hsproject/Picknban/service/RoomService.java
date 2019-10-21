@@ -59,11 +59,9 @@ public class RoomService {
     private Room setBansBasedOnToken(final Room room, final BanDTO banDTO) {
        switch (TokenGeneratorUtils.resolveFromToken(banDTO.getUserToken())) {
            case CREATOR:
-               room.setCreatorBans(banDTO.getBans());
-               break;
+               room.setCreatorBans(banDTO.getBans()); break;
            case GUEST:
-               room.setGuestBans(banDTO.getBans());
-               break;
+               room.setGuestBans(banDTO.getBans()); break;
            default:
                break;
        }
@@ -71,7 +69,6 @@ public class RoomService {
        return roomRepository.save(room);
     }
 
-    //todo uuid generator with prrefixes
     public Room ifPossibleJoinRoom(@NonNull final ConnectToRoomDTO connectDTO) {
         return Optional.ofNullable(connectDTO.getUserToken())
                 .map((gId) -> tryToJoinRoomAsGuest(connectDTO.getRoomId(), gId))
