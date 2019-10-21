@@ -45,30 +45,32 @@ public class RoomService {
                 .orElseThrow(() -> new ResourceNotFoundException(id, Room.class));
     }
 
+
+    //todo uuid generator with prrefixes
     public Room ifPossibleJoinRoom(@NonNull String roomId, String guestId) {
+        return Optional.ofNullable(guestId)
+                .map((gId) -> tryToJoinRoomAsGuest(roomId, gId))
+                .orElseGet(() -> tryToJoinRoomAndCreateGuest(roomId));
+    }
 
-        //todo uuid generator with prrefixes
+    private Room tryToJoinRoomAsGuest(String roomId, String guestId) {
+        return roomRepository.findById(roomId)
+                .filter(r -> guestId.equals(r.getGuestId()))
+                .orElseThrow(RuntimeException::new);
+    }
 
-        if (guestId != null && !guestId.isEmpty()) {
-            return roomRepository.findById(roomId)
-                    .filter(r -> guestId.equals(r.getGuestId()))
-                    .orElseThrow(RuntimeException::new);
-        }
-
+    private Room tryToJoinRoomAndCreateGuest(String roomId) {
         if (isRoomHasEmptySpot(roomId)) {
-           return roomRepository.findById(roomId)
-                .map(r -> {
-                    r.setGuestId(UUID.randomUUID().toString());
-                    return roomRepository.save(r);
-                }).orElseThrow(() -> new ResourceNotFoundException(roomId, Room.class));
+            return roomRepository.findById(roomId)
+                    .map(r -> {
+                        r.setGuestId(UUID.randomUUID().toString());
+                        return roomRepository.save(r);
+                    }).orElseThrow(() -> new ResourceNotFoundException(roomId, Room.class));
 
         } else {
             throw new RoomIsFullException(roomId);
         }
-
     }
-
-
 
     /*init of tokens on create*/
     private Room onCreate(Room old) {
